@@ -1,3 +1,4 @@
+/* Global Styles */
 *{
   margin: 0;
   padding: 0;
@@ -10,6 +11,7 @@ body {
     text-align: center;
 }
 
+/* Header Styles */
 .my-header {
   background-color: #16697a;
 }
@@ -25,9 +27,7 @@ body {
   color: #ffa62b;
 }
 
-.nav-link {
-  text-align: left;
-}
+/* Main Area Styles */
 
 .title-element {
   padding: 2rem;
@@ -43,6 +43,11 @@ body {
   padding: 1rem;
 }
 
-#options p {
-  margin: 0 auto;
+/* Styles for Dynamic Buttons */
+.question-options{
+  display: block;
+  width: 30%;
+  margin: 0.5rem auto;
 }
+
+/* Note: To reduce the Styles for the page, I used bootstrap classes. */
