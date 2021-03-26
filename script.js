@@ -37,7 +37,11 @@ var timer = function() {
     timerDisplay.innerText = "Time Remaining: " + timeRemaining
     if (timeRemaining === 0) {
       clearInterval(timerInterval);
-      timerDisplay.innerText = "Time is up, Game Over!";
+      timerDisplay.innerText = "Game Over!";
+      removeQuestion();
+      if(document.getElementById("final-score") === null && document.getElementById("initials-form") === null && document.getElementById("initials-input") === null && document.getElementById("submit-button") === null ) {
+              addResultsForm();
+      }
     }
     timeRemaining--;
   }, 1000);
@@ -57,7 +61,8 @@ var addQuestions = function() {
       questionsOptions.appendChild(newOption);
     }
   } else {
-    submitReults();
+    timeRemaining = 0;
+    addResultsForm();
   }
 }
 
@@ -65,9 +70,9 @@ var addEvent = function(newEvent) {
   newEvent.addEventListener("click", validateAnswer, true);
 }
 
-var removeEvent = function(){
+var removeEvent = function() {
   for (var i = 0; i < 4; i++) {
-    document.getElementById("option"+(i+1)).removeEventListener("click", validateAnswer, true);
+    document.getElementById("option" + (i + 1)).removeEventListener("click", validateAnswer, true);
   }
 }
 
@@ -87,12 +92,22 @@ var validateAnswer = function(event) {
   }
 }
 
-var updateQuestion = function() {
+var removeQuestion = function() {
   for (var i = 0; i < 4; i++) {
-    document.getElementById("option" + (i + 1)).remove();
+    if (document.getElementById("option" + (i + 1)) != null) {
+      document.getElementById("option" + (i + 1)).remove();
+    }
   }
-  document.getElementById("validation-result").remove();
-  document.getElementById("next-question").remove();
+  if (document.getElementById("validation-result") != null) {
+    document.getElementById("validation-result").remove();
+  }
+  if (document.getElementById("next-question") != null) {
+    document.getElementById("next-question").remove();
+  }
+}
+
+var updateQuestion = function() {
+  removeQuestion();
   addQuestions();
 }
 
@@ -110,14 +125,48 @@ var addNextQuestionButton = function() {
   questionsOptions.appendChild(newQuestion);
 }
 
-var submitReults = function() {
+var addResultsForm = function() {
   questionTitle.innerText = "Register your score";
   let finalScore = document.createElement("p");
-  finalScore.innerText = "Your final score is: "+ highScore;
+  finalScore.innerText = "Your final score is: " + highScore;
   finalScore.setAttribute("id", "final-score");
   finalScore.setAttribute("class", "score");
   questionsOptions.appendChild(finalScore);
+  let initialsForm = document.createElement("form");
+  initialsForm.setAttribute("id", "initials-form");
+  initialsForm.setAttribute("class", "form");
+  questionsOptions.appendChild(initialsForm);
+  let initialsInput = document.createElement("input");
+  initialsInput.setAttribute("id", "initials-input");
+  initialsInput.setAttribute("class", "form-item");
+  initialsInput.setAttribute("type", "text");
+  initialsInput.setAttribute("name", "initials");
+  initialsInput.setAttribute("placeholder", "Please type your initials.");
+  initialsForm.appendChild(initialsInput);
+  let submitButton = document.createElement("button");
+  submitButton.innerText = "Submit";
+  submitButton.setAttribute("id", "submit-button");
+  submitButton.setAttribute("class", "btn btn-primary btn-lg");
+  submitButton.addEventListener("click", function(event){
+    event.preventDefault();
+    saveResults(event);
+  });
+  initialsForm.appendChild(submitButton);
 }
+//Complete This function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+var saveResults = function(initials) {
+  console.log(initials);
+  let newInitials = document.getElementById("initials-input").value;
+  let newScore = highScore;
+  let newRecord = {
+    initials: newInitials,
+    score: newScore
+  }
+  historicResults.push(newRecord);
+  console.log(historicResults);
+}
+
+//Add function to see historicResults!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 startQuiz.addEventListener("click", function() {
   instructions.remove();
