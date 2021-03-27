@@ -21,6 +21,7 @@ body {
   padding: 0 2rem;
   font-size: 2rem;
   font-weight: lighter;
+  margin-bottom: 0;
 }
 
 .my-header-item:hover {
@@ -72,5 +73,26 @@ body {
   padding: 0.25rem;
   border: solid 1px #ffa62b;
   border-radius: 0.25rem;
+}
+
+.sub-title,.high-score-list {
+  display: inline-block;
+  width: 15%;
+  padding: 1rem;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0;
+  border: solid 1px #ffa62b;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.high-scores {
+  display: block;
+}
+
+#go-back-button {
+  display: block;
+  margin: 1rem auto;
 }
 /* Note: To reduce the Styles for the page, I used bootstrap classes. */

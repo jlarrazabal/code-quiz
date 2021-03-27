@@ -7,6 +7,7 @@ const questionTitle = document.getElementById("question");
 const instructions = document.getElementById("quiz-instructions");
 const questionsOptions = document.getElementById("options");
 const startQuiz = document.getElementById("start-quiz-btn");
+const viewHighScores = document.getElementById("high-Scores-link")
 const questions = [{
     question: "Question 1",
     options: ["Option 1", "Option 2", "Option 3", "Option 4"],
@@ -164,12 +165,75 @@ var saveResults = function(initials) {
   }
   historicResults.push(newRecord);
   console.log(historicResults);
+  renderHighScores();
 }
 
 //Add function to see historicResults!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+var renderHighScores = function() {
+  if(instructions != null) {
+      instructions.remove();
+  }
+  if(startQuiz != null) {
+      startQuiz.remove();
+  }
+  if(startQuiz != null) {
+      startQuiz.remove();
+  }
+  if(document.getElementById("final-score") != null) {
+    document.getElementById("final-score").remove();
+  }
+  if(document.getElementById("initials-form") != null) {
+    document.getElementById("initials-form").remove();
+  }
+  if(document.getElementById("initials-input") != null) {
+    document.getElementById("initials-input").remove();
+  }
+  if(document.getElementById("submit-button") != null) {
+    document.getElementById("submit-button").remove();
+  }
+
+  questionTitle.innerText = "High Scores";
+  let initialsSubTitle = document.createElement("h3");
+  initialsSubTitle.innerText = "Intials";
+  initialsSubTitle.setAttribute("id","initials-sub-title");
+  initialsSubTitle.setAttribute("class", "sub-title");
+  questionsOptions.appendChild(initialsSubTitle);
+  let scoreSubTitle = document.createElement("h3");
+  scoreSubTitle.innerText = "Scores";
+  scoreSubTitle.setAttribute("id","scores-sub-title");
+  scoreSubTitle.setAttribute("class", "sub-title");
+  questionsOptions.appendChild(scoreSubTitle);
+  for (var i = 0; i < historicResults.length; i++) {
+    let highScoreSection = document.createElement("div");
+    highScoreSection.setAttribute("id","high-scores-div"+i);
+    highScoreSection.setAttribute("class", "high-scores");
+    questionsOptions.appendChild(highScoreSection);
+    let initials = document.createElement("h5");
+    initials.innerText = historicResults[i].initials;
+    initials.setAttribute("id","initials"+i);
+    initials.setAttribute("class", "high-score-list");
+    highScoreSection.appendChild(initials);
+    let score = document.createElement("h5");
+    score.innerText = historicResults[i].score;
+    score.setAttribute("id","score"+i);
+    score.setAttribute("class", "high-score-list");
+    highScoreSection.appendChild(score);
+  }
+  let goBackButton = document.createElement("button");
+  goBackButton.innerText = "Go Back";
+  goBackButton.setAttribute("id", "go-back-button");
+  goBackButton.setAttribute("class", "btn btn-primary btn-lg");
+  goBackButton.addEventListener("click", function(event){
+    event.preventDefault();
+    location.reload();
+  });
+  questionsOptions.appendChild(goBackButton);
+}
 
 startQuiz.addEventListener("click", function() {
   instructions.remove();
   startQuiz.remove();
   timer();
 });
+
+viewHighScores.addEventListener("click", renderHighScores);
