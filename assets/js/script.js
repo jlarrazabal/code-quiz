@@ -2,7 +2,8 @@
 var timeRemaining = 60;
 var currentQuestion = 0;
 var highScore = 0;
-var historicResults = [];
+var historicResults;
+var finalScore = {};
 const questionTitle = document.getElementById("question");
 const instructions = document.getElementById("quiz-instructions");
 const questionsOptions = document.getElementById("options");
@@ -10,28 +11,36 @@ const startQuiz = document.getElementById("start-quiz-btn");
 const viewHighScores = document.getElementById("high-Scores-link")
 const questions = [{
     question: "Question 1",
-    options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    options: ["Q1 - Option 1", "Q1 - Option 2", "Q1 - Option 3", "Q1 - Option 4"],
     answer: "option1"
   },
   {
     question: "Question 2",
-    options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    options: ["Q2 - Option 1", "Q2 - Option 2", "Q2 - Option 3", "Q2 - Option 4"],
     answer: "option2"
   },
   {
     question: "Question 3",
-    options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    options: ["Q3 - Option 1", "Q3 - Option 2", "Q3 - Option 3", "Q3 - Option 4"],
     answer: "option3"
   },
   {
     question: "Question 4",
-    options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    options: ["Q4 - Option 1", "Q4 - Option 2", "Q4 - Option 3", "Q4- Option 4"],
     answer: "option4"
   }
 ]
-var score = questions.length;
 
-//Timer Function
+//Function to get the historic results from Local Storage
+var init = function() {
+  if (localStorage.getItem("scoresHistory") === null) {
+    historicResults = [];
+  } else {
+    historicResults = JSON.parse(localStorage.getItem("scoresHistory"));
+  }
+}
+
+//Function tha Manages the Timer at the top right corner of the page
 var timer = function() {
   let timerInterval = setInterval(function() {
     let timerDisplay = document.getElementById("timer");
@@ -39,9 +48,9 @@ var timer = function() {
     if (timeRemaining === 0) {
       clearInterval(timerInterval);
       timerDisplay.innerText = "Game Over!";
-      removeQuestion();
-      if(document.getElementById("final-score") === null && document.getElementById("initials-form") === null && document.getElementById("initials-input") === null && document.getElementById("submit-button") === null ) {
-              addResultsForm();
+      clearContent();
+      if (document.getElementById("final-score") === null && document.getElementById("initials-form") === null && document.getElementById("initials-input") === null && document.getElementById("submit-button") === null) {
+        addResultsForm();
       }
     }
     timeRemaining--;
@@ -49,13 +58,13 @@ var timer = function() {
   addQuestions();
 }
 
-//Add questions Function
+//Function that adds the questions after starting the quiz and after a question is answered by the user
 var addQuestions = function() {
   if (currentQuestion < questions.length) {
     for (var i = 0; i < 4; i++) {
       questionTitle.innerText = questions[currentQuestion].question;
       let newOption = document.createElement("button");
-      newOption.innerText = questions[i].options[i];
+      newOption.innerText = questions[currentQuestion].options[i];
       newOption.setAttribute("id", "option" + (i + 1));
       newOption.setAttribute("class", "btn btn-info question-options");
       addEvent(newOption);
@@ -67,16 +76,19 @@ var addQuestions = function() {
   }
 }
 
+//Function that adds an event listener to the option buttons to capture the user selection
 var addEvent = function(newEvent) {
   newEvent.addEventListener("click", validateAnswer, true);
 }
 
+//Function that removes the event listener from the option buttons to prevent multiple selections by the user
 var removeEvent = function() {
   for (var i = 0; i < 4; i++) {
     document.getElementById("option" + (i + 1)).removeEventListener("click", validateAnswer, true);
   }
 }
 
+//Fuction that compares the option selected by the user and the correct answer of the question then returs a message to the user with the result. If the answer is correct, the function will add a point to the user's score. If the answer is Incorrect, the fuction will substract 5 seconds from the remaining time
 var validateAnswer = function(event) {
   let userAnswerID = event.target.getAttribute("id");
   let questionAnswer = questions[currentQuestion].answer;
@@ -92,26 +104,12 @@ var validateAnswer = function(event) {
     currentQuestion++;
   }
 }
-
-var removeQuestion = function() {
-  for (var i = 0; i < 4; i++) {
-    if (document.getElementById("option" + (i + 1)) != null) {
-      document.getElementById("option" + (i + 1)).remove();
-    }
-  }
-  if (document.getElementById("validation-result") != null) {
-    document.getElementById("validation-result").remove();
-  }
-  if (document.getElementById("next-question") != null) {
-    document.getElementById("next-question").remove();
-  }
-}
-
+//Function that updates the question and options after the user clicks on the next button
 var updateQuestion = function() {
-  removeQuestion();
+  clearContent();
   addQuestions();
 }
-
+//Function that adds the result message based on the user's selection and the next button to move to then next question or to the results page to register the score
 var addNextQuestionButton = function() {
   let validationResult = document.createElement("p");
   validationResult.innerText = "Correct answer!";
@@ -119,13 +117,14 @@ var addNextQuestionButton = function() {
   validationResult.setAttribute("class", "results");
   questionsOptions.appendChild(validationResult);
   let newQuestion = document.createElement("button");
-  newQuestion.innerText = "Next Question";
+  newQuestion.innerText = "Next";
   newQuestion.setAttribute("id", "next-question");
   newQuestion.setAttribute("class", "btn btn-info btn-warning next-question-btn");
   newQuestion.addEventListener("click", updateQuestion);
   questionsOptions.appendChild(newQuestion);
 }
 
+//Fuction that adds the results form for the user to register the score after answeing all the questions
 var addResultsForm = function() {
   questionTitle.innerText = "Register your score";
   let finalScore = document.createElement("p");
@@ -148,74 +147,60 @@ var addResultsForm = function() {
   submitButton.innerText = "Submit";
   submitButton.setAttribute("id", "submit-button");
   submitButton.setAttribute("class", "btn btn-primary btn-lg");
-  submitButton.addEventListener("click", function(event){
+  submitButton.addEventListener("click", function(event) {
     event.preventDefault();
     saveResults(event);
   });
   initialsForm.appendChild(submitButton);
 }
-//Complete This function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//Function that saves the results of the quiz and stores the data in the browswer's local Storage
 var saveResults = function(initials) {
   console.log(initials);
   let newInitials = document.getElementById("initials-input").value;
-  let newScore = highScore;
-  let newRecord = {
-    initials: newInitials,
-    score: newScore
+  if(newInitials === "") {
+    alert("Initials are required to proceed, please try again")
+  } else {
+    let newScore = highScore;
+    let newRecord = {
+      initials: newInitials,
+      score: newScore
+    }
+    finalScore = newRecord;
+    historicResults.push(newRecord);
+    localStorage.setItem("scoresHistory", JSON.stringify(historicResults));
+    console.log(finalScore);
+    renderHighScores();
   }
-  historicResults.push(newRecord);
-  console.log(historicResults);
-  renderHighScores();
 }
 
-//Add function to see historicResults!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//Function that renders the High Scores
 var renderHighScores = function() {
-  if(instructions != null) {
-      instructions.remove();
-  }
-  if(startQuiz != null) {
-      startQuiz.remove();
-  }
-  if(startQuiz != null) {
-      startQuiz.remove();
-  }
-  if(document.getElementById("final-score") != null) {
-    document.getElementById("final-score").remove();
-  }
-  if(document.getElementById("initials-form") != null) {
-    document.getElementById("initials-form").remove();
-  }
-  if(document.getElementById("initials-input") != null) {
-    document.getElementById("initials-input").remove();
-  }
-  if(document.getElementById("submit-button") != null) {
-    document.getElementById("submit-button").remove();
-  }
-
+  clearContent();
   questionTitle.innerText = "High Scores";
   let initialsSubTitle = document.createElement("h3");
   initialsSubTitle.innerText = "Intials";
-  initialsSubTitle.setAttribute("id","initials-sub-title");
+  initialsSubTitle.setAttribute("id", "initials-sub-title");
   initialsSubTitle.setAttribute("class", "sub-title");
   questionsOptions.appendChild(initialsSubTitle);
   let scoreSubTitle = document.createElement("h3");
   scoreSubTitle.innerText = "Scores";
-  scoreSubTitle.setAttribute("id","scores-sub-title");
+  scoreSubTitle.setAttribute("id", "scores-sub-title");
   scoreSubTitle.setAttribute("class", "sub-title");
   questionsOptions.appendChild(scoreSubTitle);
   for (var i = 0; i < historicResults.length; i++) {
     let highScoreSection = document.createElement("div");
-    highScoreSection.setAttribute("id","high-scores-div"+i);
+    highScoreSection.setAttribute("id", "high-scores-div" + i);
     highScoreSection.setAttribute("class", "high-scores");
     questionsOptions.appendChild(highScoreSection);
     let initials = document.createElement("h5");
     initials.innerText = historicResults[i].initials;
-    initials.setAttribute("id","initials"+i);
+    initials.setAttribute("id", "initials" + i);
     initials.setAttribute("class", "high-score-list");
     highScoreSection.appendChild(initials);
     let score = document.createElement("h5");
     score.innerText = historicResults[i].score;
-    score.setAttribute("id","score"+i);
+    score.setAttribute("id", "score" + i);
     score.setAttribute("class", "high-score-list");
     highScoreSection.appendChild(score);
   }
@@ -223,17 +208,55 @@ var renderHighScores = function() {
   goBackButton.innerText = "Go Back";
   goBackButton.setAttribute("id", "go-back-button");
   goBackButton.setAttribute("class", "btn btn-primary btn-lg");
-  goBackButton.addEventListener("click", function(event){
+  goBackButton.addEventListener("click", function(event) {
     event.preventDefault();
     location.reload();
   });
   questionsOptions.appendChild(goBackButton);
+  let clearButton = document.createElement("button");
+  clearButton.innerText = "Clear Scores";
+  clearButton.setAttribute("id", "clear-button");
+  clearButton.setAttribute("class", "btn btn-danger btn-lg");
+  clearButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    clearScores();
+  });
+  questionsOptions.appendChild(clearButton);
 }
 
+//Fuction that cleares the scores in the historicResults variable and the local storage
+var clearScores = function() {
+  clearContent();
+  historicResults = [];
+  localStorage.clear();
+  renderHighScores();
+}
+
+//Function that clears the content of the page to allow the other functions to render the different views of the page
+var clearContent = function() {
+  if (instructions != null) {
+    instructions.remove();
+  }
+  if (startQuiz != null) {
+    startQuiz.remove();
+  }
+  if (startQuiz != null) {
+    startQuiz.remove();
+  }
+  while (questionsOptions.firstChild) {
+    questionsOptions.removeChild(questionsOptions.firstChild);
+  }
+}
+
+//Adds the addEventListener for the Start Quiz button
 startQuiz.addEventListener("click", function() {
   instructions.remove();
   startQuiz.remove();
   timer();
 });
 
+//Adds the addEventListener to the View High Score paragraph located the top left of the page
 viewHighScores.addEventListener("click", renderHighScores);
+
+//Runs the init function
+init();

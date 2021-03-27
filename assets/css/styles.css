@@ -37,7 +37,7 @@ body {
 }
 
 .instructions {
-  width: 50%;
+  width: 30%;
   margin: 0 auto;
 }
 
@@ -80,6 +80,7 @@ body {
   width: 15%;
   padding: 1rem;
   padding-bottom: 0.25rem;
+  margin: 0.25rem;
   margin-bottom: 0;
   border: solid 1px #ffa62b;
   border-top: none;
@@ -94,5 +95,48 @@ body {
 #go-back-button {
   display: block;
   margin: 1rem auto;
+}
+
+/* Media Queries*/
+@media screen and (max-width: 1024px) {
+  .instructions {
+    width: 70%;
+  }
+  .question-options{
+    width: 50%;
+  }
+  .results {
+    width: 50%;
+  }
+  .sub-title,.high-score-list {
+    width: 30%;
+  }
+}
+.next-question-btn {
+  width: 15%;
+}
+
+@media screen and (max-width: 600px) {
+  .my-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .instructions {
+    width: 95%;
+  }
+  .question-options{
+    width: 75%;
+  }
+  .results {
+    width: 75%;
+  }
+  .sub-title,.high-score-list {
+    width: 40%;
+  }
+  .next-question-btn {
+    width: 20%;
+  }
 }
 /* Note: To reduce the Styles for the page, I used bootstrap classes. */
