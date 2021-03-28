@@ -10,23 +10,23 @@ const questionsOptions = document.getElementById("options");
 const startQuiz = document.getElementById("start-quiz-btn");
 const viewHighScores = document.getElementById("high-Scores-link")
 const questions = [{
-    question: "Question 1",
-    options: ["Q1 - Option 1", "Q1 - Option 2", "Q1 - Option 3", "Q1 - Option 4"],
+    question: "______ is the most basic building block of the Web. It defines the meaning and structure of web content.",
+    options: ["HTML", "CSS", "JavaScript", "Python"],
     answer: "option1"
   },
   {
-    question: "Question 2",
-    options: ["Q2 - Option 1", "Q2 - Option 2", "Q2 - Option 3", "Q2 - Option 4"],
+    question: "______ class represents one of JavaScript's data types. It is used to store various keyed collections and more complex entities.",
+    options: ["The String", "The Object", "The Array", "The Boolean"],
     answer: "option2"
   },
   {
-    question: "Question 3",
-    options: ["Q3 - Option 1", "Q3 - Option 2", "Q3 - Option 3", "Q3 - Option 4"],
+    question: "______ is a popular unopinionated web framework, written in JavaScript and hosted within the Node.js runtime environment.",
+    options: ["Angular", "React.js", "Express", "jQuery"],
     answer: "option3"
   },
   {
-    question: "Question 4",
-    options: ["Q4 - Option 1", "Q4 - Option 2", "Q4 - Option 3", "Q4- Option 4"],
+    question: "______ the world’s most popular framework for building responsive, mobile-first sites, with jsDelivr and a template starter page.",
+    options: ["jQuery", "Express", "Express", "Bootstrap"],
     answer: "option4"
   }
 ]

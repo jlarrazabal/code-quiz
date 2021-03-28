@@ -31,7 +31,9 @@ body {
 /* Main Area Styles */
 
 .title-element {
+  margin: 0 auto;
   padding: 2rem;
+  width: 50%;
   padding-bottom: 0.25rem;
   color: #db6400;
 }
@@ -99,6 +101,11 @@ body {
 
 /* Media Queries*/
 @media screen and (max-width: 1024px) {
+
+  .title-element {
+    width: 75%;
+  }
+
   .instructions {
     width: 70%;
   }
@@ -123,6 +130,11 @@ body {
     align-items: center;
     justify-content: center;
   }
+
+  .title-element {
+    width: 95%;
+  }
+
   .instructions {
     width: 95%;
   }
