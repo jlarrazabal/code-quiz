@@ -10,15 +10,13 @@
 ![alt text](assets/images/questions-&-timer-running.png)
 
 - Register Results:
-![alt text](assets/images/register-results.png);
+![alt text](assets/images/register-results.png)
 
-- Scores:
-
-* Empty Scores:
+- Empty Scores:
 ![alt text](assets/images/empty-scores.png)
 
-* Scores after completing the quiz:
+- Scores after completing the quiz:
 ![alt text](assets/images/scores-after-completing-quiz.png)
 
-* Scores When Clicking on View High Scores:
+- Scores When Clicking on View High Scores:
 ![alt text](assets/images/scores-clicking-on-view-hs.png)
