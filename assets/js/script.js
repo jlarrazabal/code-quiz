@@ -4,6 +4,7 @@ var currentQuestion = 0;
 var highScore = 0;
 var historicResults;
 var finalScore = {};
+var flag = true;
 const questionTitle = document.getElementById("question");
 const instructions = document.getElementById("quiz-instructions");
 const questionsOptions = document.getElementById("options");
@@ -42,6 +43,7 @@ var init = function() {
 
 //Function tha Manages the Timer at the top right corner of the page
 var timer = function() {
+  flag = false;
   let timerInterval = setInterval(function() {
     let timerDisplay = document.getElementById("timer");
     timerDisplay.innerText = "Time Remaining: " + timeRemaining
@@ -171,6 +173,7 @@ var saveResults = function(initials) {
     localStorage.setItem("scoresHistory", JSON.stringify(historicResults));
     console.log(finalScore);
     renderHighScores();
+    flag = true;
   }
 }
 
@@ -256,7 +259,11 @@ startQuiz.addEventListener("click", function() {
 });
 
 //Adds the addEventListener to the View High Score paragraph located the top left of the page
-viewHighScores.addEventListener("click", renderHighScores);
+viewHighScores.addEventListener("click", function() {
+  if(flag) {
+    renderHighScores();
+  }
+});
 
 //Runs the init function
 init();
