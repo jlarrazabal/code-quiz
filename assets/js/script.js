@@ -27,7 +27,7 @@ const questions = [{
   },
   {
     question: "______ the world’s most popular framework for building responsive, mobile-first sites, with jsDelivr and a template starter page.",
-    options: ["jQuery", "Express", "Express", "Bootstrap"],
+    options: ["jQuery", "React.js", "Express", "Bootstrap"],
     answer: "option4"
   }
 ]
